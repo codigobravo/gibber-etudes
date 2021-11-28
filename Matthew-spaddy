@@ -1,0 +1,64 @@
+​s = Sphere ({ segments:100, rings :100 })
+	s.scale = 1.75
+	s.rotation= .5
+	s.spin( .05)
+f = Film()
+f.sCount= Master.Out
+f.sIntensity(.8)
+ff = Focus()
+ff.sampleDistance = 2 
+ff.waveFactor = Master.Out
+dd = Dots({ scale:3})
+
+p = Pluck ()
+	.damping(0,3,1,6)
+	.note.seq( [0,8,16,24], [1,1/2,1/3])	
+	.pan.seq([-1,0,1],[1/5,1/6,1/2,1/7,1/23])
+d = Delay(1/11,.4 )
+p.fx.add( d )
+p.amp(.1)
+
+mr = Reverb({ roomsize:600, damping:.7 })
+md = Delay(6000, .2)
+Master.fx.add( md, mr)
+
+Clock.bpm =75
+
+c= SoundFont('electric_piano_1')
+
+c.note.seq([4,12,20],[1,2])
+c.pan.seq( [-1,0,1,][1/2])
+dd = Delay(1/5,.6)
+c.fx.add( dd)
+
+pl = SoundFont('pad_3_polysynth')
+
+pl.chord.seq( Rndi(0,12,24,32),[3,5])
+de = Delay (1/11,.9)
+pl.chordfx.add (de)
+pl.amp(.1)
+
+Clock.bpm =75
+
+Master.amp(.8)
+
+m= Mono({
+  useADSR:(2)
+  attack:(2)
+  decay(2/3)
+	sustain:(1/3)
+	release:(2) })
+m.filterMult = Add( .25, Sine(.1, .25)._ )
+x = Arp( [0,4,8,12], 5, 'updwon',1)
+x.target = m
+dddd = Delay( 1/9, .8 )
+m.fx.add( dddd)
+
+Clock.bpm = x
+
+Gibber.scale.mode = 'Lydian'
+
+Gibber.scale.root = 'f2'
+
+
+})
